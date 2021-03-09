@@ -128,7 +128,8 @@ func (daemon *Daemon) ProcessEvent(id string, e libcontainerdtypes.EventType, ei
 
 		daemon.LogContainerEvent(c, "oom")
 	case libcontainerdtypes.EventExit:
-		if int(ei.Pid) == c.Pid {
+		// This may do not need: https://github.com/kata-containers/kata-containers/pull/1498
+		if ei.ContainerID == ei.ProcessID {
 			return daemon.handleContainerExit(c, &ei)
 		}
 
